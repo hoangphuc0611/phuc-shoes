@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        
+        <link href="{% static 'css/app.e772980a.css' %}" rel="preload" as="style">
+        <title>Golden Sneaker</title>
+        <link href="{% static 'js/app.e65694c8.js' %}" rel="preload" as="script">
+        <link href="{% static 'js/chunk-vendors.d8c3231a.js' %}" rel="preload" as="script">
+        <link href="{% static 'css/app.e772980a.css' %}" rel="stylesheet">
+    
+    </head>
+    <body>
+        <div class="main-content">
+            <div class="card">
+                <div class="card-top">
+                    <img src="{% static 'assets/nike.png' %}" class="card-top-logo">
+                </div>
+                <div class="card-title">
+                    Our Products
+                </div>
+                <div class="card-body">
+                    <div class="shop-items">
+                        {% for object in object_list %}
+                            <div class="shop-item">
+                                <div class="shop-item-image" style="background-color: {{object.color}};">
+                                    <img src="{{object.image}}">
+                                </div>
+                                <div class="shop-item-name">{{object.name}}</div>
+                                <div class="shop-item-description">{{object.description}}</div>
+                                <div class="shop-item-bottom">
+                                    <div class="shop-item-price">${{object.price}}</div>
+                                    {% if item_list is not None and object.id in list_id %}
+                                    <div class="shop-item-button inactive">
+                                        <div class="shop-item-button-cover">
+                                            <div class="shop-item-button-cover-check-icon"></div>
+                                        </div>
+                                    </div>
+                                        
+                                    {% else %}
+                                    <div class="shop-item-button" >
+                                        <p onclick="location.href = '{% url 'create_cartitem' object.id %}'">ADD TO CART</p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor%}
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-top">
+                    <img src="{% static 'assets/nike.png' %}" class="card-top-logo">
+                </div>
+                <div class="card-title">
+                    Your cart
+                    <span class="card-title-amount">${{total_price}}</span>
+                </div>
+                <div class="card-body">
+                    <div class="cart-items">
+                        <div>
+                            {% if item_list is not None %}
+                                {% for item in item_list %}
+                                <div class="cart-item">
+                                    <div class="cart-item-left">
+                                        <div class="cart-item-image" style="background-color: rgb(225, 231, 237);">
+                                            <div class="cart-item-image-block">
+                                                <img src="{{item.product.image}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cart-item-right">
+                                        <div class="cart-item-name">{{item.product.name}}</div>
+                                        <div class="cart-item-price">${{item.product.price}}</div>
+                                        <div class="cart-item-actions">
+                                            <div class="cart-item-count">
+                                                <div onclick="location.href = '{% url 'subtract' item.product.id %}'" class="cart-item-count-button">-</div>
+                                                <div class="cart-item-count-number">{{item.quantity}}</div>
+                                                <div onclick="location.href = '{% url 'addition' item.product.id %}'" class="cart-item-count-button">+</div>
+                                            </div>
+                                            <div class="cart-item-remove" onclick="location.href = '{% url 'remove' item.product.id %}'">
+                                                <img src="{% static 'assets/trash.png' %}" class="cart-item-remove-icon">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                Your cart is empty
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="{% static 'js/chunk-vendors.d8c3231a.js' %}"></script>
+        <script src="{% static 'css/app.e772980a.css' %}"></script>
+    </body>
+</html>
